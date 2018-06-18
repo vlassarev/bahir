@@ -1,3 +1,29 @@
+# Added TLS Support to Bahir's MQTT library
+
+## SBT Style dependencies:
+```
+libraryDependencies += "org.eclipse.paho" % "org.eclipse.paho.client.mqttv3" % "1.1.0"
+libraryDependencies += "org.bouncycastle" % "bcmail-jdk15on" % "1.58"
+libraryDependencies += "org.bouncycastle" % "bcpkix-jdk15on" % "1.58"
+libraryDependencies += "org.bouncycastle" % "bcprov-jdk15on" % "1.58"
+libraryDependencies += "org.bouncycastle" % "bcprov-ext-jdk15on" % "1.58"
+```
+
+## Scala code to connect.
+Added cacrtfile, crtfile and keyfile.
+```scala
+spark.readStream.
+  format("org.apache.bahir.sql.streaming.mqtt.MQTTStreamSourceProvider").
+  option("topic", "#").
+  option("cacrtfile", cacrtfilePath).
+  option("crtfile" , crtfilePath).
+  option("keyfile", keyfilePath).
+  option("cleanSession", "true").
+  option("connectionTimeout", 60).
+  option("keepAlive", 60).
+  load(mqttEndpoint)
+```
+
 # Apache Bahir
 
 Apache Bahir provides extensions to distributed analytics platforms such as Apache Spark & Apache Flink.
